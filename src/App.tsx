@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFootballDataProvider } from "./data";
+import { createDeterministicCreativeQuestion } from "./creativeQuestion";
 import { calculateAnswer, generateQuestions, hasUsableMatchStats } from "./quiz";
 import { getTriggeredRecordQuestion } from "./records";
 import type { CreativeMatchQuestion, Fixture, MatchStats, QuizQuestion } from "./types";
@@ -223,9 +224,30 @@ function MatchDetail({ fixture, onBack }: MatchDetailProps) {
     }).finally(() => setIsRefreshing(false));
   };
 
-  const generateStoryQuestion = () => {
+  const generateStoryQuestion = async () => {
     setStoryLoading(true);
     setStoryError(null);
+    if (currentFixture.dataSource === "demo") {
+      try {
+        const matchStats = stats ?? await provider.getMatchStats(currentFixture.id);
+        if (!matchStats) {
+          setStoryError("There is not enough verified match data to generate a creative question yet.");
+          return;
+        }
+        setStats(matchStats);
+        const question = createDeterministicCreativeQuestion(currentFixture, matchStats);
+        if (!question) {
+          setStoryError("There is not enough verified match data to generate a creative question yet.");
+        } else {
+          setStoryQuestion(question);
+        }
+      } catch {
+        setStoryError("We could not load the demo match statistics for the creative question.");
+      } finally {
+        setStoryLoading(false);
+      }
+      return;
+    }
     fetch(`/api/fixtures/${encodeURIComponent(currentFixture.id)}/story-question`).then(async (result) => {
       const body = await result.json() as CreativeMatchQuestion | { error?: string };
       if (!result.ok) throw new Error("error" in body ? body.error : "Creative question unavailable");

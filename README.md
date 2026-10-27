@@ -114,6 +114,8 @@ MATCH_QUESTION_MODE=deterministic
 MATCH_QUESTION_FALLBACK=true
 ```
 
+In demo mode, Match Story questions are generated directly from the loaded demo statistics in the browser. This means the feature works without API-Football credentials, AWS credentials, or the Express API.
+
 ### API-Football mode
 
 Use the following settings in `.env`:
@@ -206,4 +208,3 @@ The tests cover quiz generation, API provider behavior, API normalization, creat
 - Rotate credentials if they have been committed, pasted into a public issue, or otherwise exposed.
 - Do not use `git add -f .env`.
 - Use AWS IAM roles and Secrets Manager for deployed services.
-
