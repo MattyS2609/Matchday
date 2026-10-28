@@ -2,6 +2,10 @@
 
 Matchday is a Premier League football quiz built around the changing story of a match. It combines live API-Football data with a React quiz engine, historical record questions, and optional AI-generated Match Story questions.
 
+## Demo
+Watch a demo of the Matchday quiz in action. The video starts with the quiz in demo mode using demo data to show the record breaking question. It then switches to the quiz in live data mode where it fetches live match information from the API. This section starts of with the 10 question quiz, then at the end shows the Generative AI question. 
+[▶ Watch the Demo](https://github.com/user-attachments/assets/842e948d-d84d-4212-81ef-6e7f1f04ece8)
+
 ## Project progress
 
 Milestones 1–6 are complete:
